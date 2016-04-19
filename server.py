@@ -21,6 +21,10 @@ app = Flask(__name__)
 @app.route(config['path']+'<string:hook>',methods=['POST'])
 def gothook(hook):
     try:
+        body=request.json()
+        branch=body['ref'].split('/')[-1]
+        if branch!=u'master':
+            return  ''
         logger.info('Get githook from:'+request.remote_addr)
         detail = config['hooks'][hook]
         os.system(detail['commands'])
